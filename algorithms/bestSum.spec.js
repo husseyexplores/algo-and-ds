@@ -17,6 +17,8 @@ arguments:
 -------------------------------------------------------------------------*/
 
 const hasOwnProp = Object.prototype.hasOwnProperty
+
+// Recursive
 const bestSum = (targetSum, numbers, memo = {}) => {
   if (hasOwnProp.call(memo, targetSum)) return memo[targetSum]
 
@@ -43,6 +45,32 @@ const bestSum = (targetSum, numbers, memo = {}) => {
   return shortestCombination
 }
 
+// Tabulation
+const bestSumTab = (targetSum, numbers) => {
+  const table = Array(targetSum + 1).fill(null)
+  table[0] = []
+
+  const tableLen = table.length
+  for (let i = 0; i < tableLen; i++) {
+    if (Array.isArray(table[i])) {
+      for (let j = 0; j < numbers.length; j++) {
+        const num = numbers[j]
+        if (i + num < tableLen) {
+          const sumCombination = [...table[i], num]
+          if (
+            !table[i + num] || // If not array(null) OR
+            sumCombination.length <= table[i + num].length // new combination is smaller than existing combination
+          ) {
+            table[i + num] = [...table[i], num]
+          }
+        }
+      }
+    }
+  }
+
+  return table[targetSum]
+}
+
 // -----------------------------------------------------------------------
 
 describe('Best Sum', () => {
@@ -50,9 +78,13 @@ describe('Best Sum', () => {
     expect(bestSum(7, [5, 3, 4, 7])).toEqual([7])
     expect(bestSum(8, [2, 3, 5])).toEqual([5, 3])
     expect(bestSum(8, [1, 2, 4, 5])).toEqual([4, 4])
+    expect(bestSumTab(7, [5, 3, 4, 7])).toEqual([7])
+    expect(bestSumTab(8, [2, 3, 5])).toEqual([5, 3])
+    expect(bestSumTab(8, [1, 2, 4, 5])).toEqual([4, 4])
   })
   it('Huge', () => {
     expect(bestSum(100, [1, 2, 5, 25])).toEqual([25, 25, 25, 25])
+    expect(bestSumTab(100, [1, 2, 5, 25])).toEqual([25, 25, 25, 25])
   })
 })
 
