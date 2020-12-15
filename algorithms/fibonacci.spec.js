@@ -22,6 +22,7 @@ The next number is found by adding up the two numbers before it:
 
 -------------------------------------------------------------------------*/
 
+// Recursive
 const fib = (n, memo = {}) => {
   if (n === 0) return 0
   if (n <= 2) return 1
@@ -32,6 +33,17 @@ const fib = (n, memo = {}) => {
   return memo[n]
 }
 
+// Tablulation
+const fibTab = n => {
+  const table = Array(n + 1).fill(0)
+  table[1] = 1
+  for (let i = 2; i < table.length; i++) {
+    // Sum of previous 2 values
+    table[i] = table[i - 1] + table[i - 2]
+  }
+  return table[n]
+}
+
 // -----------------------------------------------------------------------
 
 describe('Fibonacci', () => {
@@ -39,10 +51,15 @@ describe('Fibonacci', () => {
     expect(fib(4)).toEqual(3)
     expect(fib(7)).toEqual(13)
     expect(fib(11)).toEqual(89)
+    expect(fibTab(4)).toEqual(3)
+    expect(fibTab(7)).toEqual(13)
+    expect(fibTab(11)).toEqual(89)
   })
   it('Huge', () => {
     expect(fib(50)).toEqual(12586269025)
     expect(fib(70)).toEqual(190392490709135)
+    expect(fibTab(50)).toEqual(12586269025)
+    expect(fibTab(70)).toEqual(190392490709135)
   })
 })
 
