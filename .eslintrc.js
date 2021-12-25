@@ -17,8 +17,10 @@ module.exports = {
   plugins: ['prettier', 'eslint-plugin-prettier', 'jest'],
   rules: {
     semi: [0, 'never'],
+    'consistent-return': 0,
     'no-continue': 0,
     'no-plusplus': 0,
+    'no-sequences': 0,
     'no-console': 0,
     'no-underscore-dangle': 0,
     'prettier/prettier': [
